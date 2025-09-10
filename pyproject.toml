@@ -1,0 +1,19 @@
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "easyconf"
+version = "0.1.0"
+description = "Lightweight Hydra-like config management powered by OmegaConf"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["omegaconf>=2.3", "pyyaml"]
+authors = [{name = "Yang Ding", email = "yang_ding@sjtu.edu.cn"}]
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://github.com/Sonne-Ding/EasyConf"
+
+[project.scripts]
+easyconf-template = "easyconf.cli:template"   # 可选：快速生成模板
