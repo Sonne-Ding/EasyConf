@@ -29,25 +29,29 @@ def easyconf(
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            # # 1. 加载主配置
-            # yaml_file = Path(config_path) / f"{config_name}.yaml"
-            # if not yaml_file.exists():
-            #     raise FileNotFoundError(yaml_file)
-            # cfg = OmegaConf.load(yaml_file)
+            # 0. 解析 CLI 里可能出现的 --config-name
+            # 0. 提前扫一遍 sys.argv，摘出 --config-name
+            config_name_cli = None
+            filtered = []
+            it = iter(sys.argv[1:])
+            for arg in it:
+                if arg == "--config-name":          # 空格形式
+                    config_name_cli = next(it, None)
+                    if config_name_cli is None:
+                        raise ValueError("--config-name 缺少值")
+                elif arg.startswith("--config-name="):  # 等号形式
+                    config_name_cli = arg.split("=", 1)[1]
+                else:
+                    filtered.append(arg)
+            # 1. 确定最终文件名
+            final_name = config_name_cli or config_name
+            yaml_file = Path(config_path) / f"{final_name}.yaml"
+            if not yaml_file.exists():
+                raise FileNotFoundError(yaml_file)
+            # 2. 其余逻辑继续用 filtered
+            sys.argv[1:] = filtered
 
-            # # 2. 处理 compose
-            # cfg = resolve_compose(cfg, yaml_file.parent)
-
-            # # 3. 命令行覆盖（支持 -h / --help）
-            # cli_args = sys.argv[1:]
-            # if {"-h", "--help"} & set(cli_args):
-            #     print("== Configuration Template ==")
-            #     print(OmegaConf.to_yaml(cfg))
-            #     sys.exit(0)
-            # cli_cfg = OmegaConf.from_cli(cli_args)
-            # cfg = OmegaConf.merge(cfg, cli_cfg)
             # 0. 加载主配置
-            yaml_file = Path(config_path) / f"{config_name}.yaml"
             cfg = OmegaConf.load(yaml_file)
             cfg = resolve_compose(cfg, yaml_file.parent)      # 先走默认 compose
             # 1. 提取显式 compose.* 参数
@@ -89,7 +93,5 @@ def easyconf(
                 cfg = instantiate(cfg)  # type: ignore
             # 5. 注入函数
             return func(cfg, *args, **kwargs)
-
         return wrapper
-
     return decorator

@@ -19,8 +19,7 @@ logger:
     logdir: "log/swanLog"
 optimizer:
   _target_: torch.optim.Adam
-  _partial_: True
-  lr: 0.001
+  lr: 0.005
   betas:
     - 0.9
     - 0.999
