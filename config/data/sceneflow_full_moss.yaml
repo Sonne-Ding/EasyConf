@@ -1,0 +1,35 @@
+compose:
+  - imgReader: D1reader
+name: sceneflow_SceneFlowDisp
+need:
+  - 'img_l'
+  - 'img_r'
+  - 'disp_l'
+  - 'disp_r'
+
+root: "/data/SceneFlowFull"
+catalog: "/data/SceneFlowFull/info/SceneFlowFull_val100.yaml"
+dispReader:
+  _target_: src.data.reader.PfmReader
+train:
+  batchSize: 4
+  numWorker: 8
+  transforms:
+    - _target_: src.data.transform.RandomCrop
+      size: [256, 768]
+    - _target_: src.data.transform.ToTensor
+val:
+  batchSize: 1
+  numWorker: 4
+  transforms:
+    - _target_: src.data.transform.RightTopPad
+      size: [544, 960]
+    - _target_: src.data.transform.ToTensor
+test:
+  batchSize: 1
+  numWorker: 4
+  transforms:
+    - _target_: src.data.transform.RightTopPad
+      size: [544, 960]
+    - _target_: src.data.transform.ToTensor
+

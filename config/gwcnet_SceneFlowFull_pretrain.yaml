@@ -1,0 +1,6 @@
+compose:
+  - data: sceneflow_full_moss
+  # - model: gwcnet_base
+  # - trainer: gwcnet_trainer
+
+expname: GwcNet_SceneFlowFull_pretrain

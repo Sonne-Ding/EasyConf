@@ -1,4 +1,0 @@
-learning_rate: 1e-3
-compose:
-  - data: data1
-  - model: model1

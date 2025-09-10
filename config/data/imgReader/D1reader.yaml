@@ -1,0 +1,4 @@
+_target_: src.data.reader.DegradationReader
+config:
+  scale: 1
+  img: right

@@ -1,2 +1,0 @@
-name: Model1
-ckpt_dir: runs/${name}

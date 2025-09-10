@@ -1,0 +1,34 @@
+name: SMNormal 
+epochs: 50
+seed: 6
+resume: False
+ckptPath: ""
+maxdisp: 192
+summaryFreq: 20
+valFreq: 10
+logger:
+  msgLogger:
+    _target_: src.cookware.Logger.BaseMsgLogger
+    logdir: log/msgLog/${expname}
+  vizLogger:
+    _target_: src.cookware.Logger.init_swanrun
+    project: "SceneFlowMini"
+    expname: ${expname}
+    tags: ~
+    desc: "hello"
+    logdir: "log/swanLog"
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: True
+  lr: 0.001
+  betas:
+    - 0.9
+    - 0.999
+lrScheduler:
+  _target_: torch.optim.lr_scheduler.MultiStepLR
+  milestones:
+    - 10
+    - 12
+    - 14
+  gamma: 0.5
+

@@ -1,7 +1,17 @@
+from src.easyconf import easyconf, instantiate
+import torch
 from omegaconf import OmegaConf
+from torchvision.models import resnet18
 
+@easyconf("config", "gwcnet_SceneFlowFull_pretrain", instantiate_cfg=False)
+def my_app(cfg):
+    print(OmegaConf.to_yaml(cfg))
+    # model = resnet18()
+    # optimizer = instantiate(cfg.trainer.optimizer)
+    # optimizer = optimizer(model.parameters())
+    # print(optimizer)
+    # print(type(optimizer))
 
-cfg = OmegaConf.create({"model": {"lr": 1e-3}, "debug": False})
-cli = OmegaConf.from_cli()      # 捕获命令行
-final = OmegaConf.merge(cfg, cli)
-print(OmegaConf.to_yaml(final))
+if __name__ == "__main__":
+    my_app()
+    
