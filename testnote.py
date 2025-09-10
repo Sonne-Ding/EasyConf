@@ -1,5 +1,7 @@
 from src.easyconf import easyconf, instantiate
 import torch
+from src.easyconf import easyconf, instantiate
+import torch
 from omegaconf import OmegaConf
 from torchvision.models import resnet18
 
